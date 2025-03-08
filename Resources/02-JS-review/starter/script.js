@@ -142,3 +142,80 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
+
+/*
+const book  = getBook(2);
+const  {title, author, genres, pages, publicationDate} = book;
+
+console.log(title, author, genres, pages, publicationDate);
+
+const[primaryGenre, secondaryGenre] = genres;
+
+console.log(primaryGenre, secondaryGenre);
+
+
+const updatedBook = { ...book, moviePublicationDate: "2001-12-19", pages:152};
+
+updatedBook;
+
+const summary = `${title} is a book ${2+4}`;
+summary;
+
+const pageRange = pages>100? "over hundread": "small amount";
+pageRange;
+
+
+const getYear =(str) =>str.split("-")[0];
+
+console.log(getYear(publicationDate));
+
+const spanishTrans = book.translations.spanish || "Not trans";
+spanishTrans;
+
+*/
+
+const books=  getBooks();
+
+const titles=  books.map((book)=> book.title);
+
+const essentials =  books.map((book)=> ({
+  title: book.title,
+  author: book.author,
+}));
+
+const longBooks = books.filter((book)=> book.pages>500)
+.filter((book)=> book.hasMovieAdaptation)
+.map((book)=> book.title);
+
+const pagesAllBooks = books.reduce((acc, book)=> acc + book.pages ,0);
+
+const sortedByPages = books.slice().sort((a,b)=> b.pages - a.pages);
+
+const newBook = {
+  id:6,
+  title: "New book",
+  author: "Test Author"
+};
+
+const booksAFterAdded = [...books, newBook];
+
+const booksAfterUpdate = booksAFterAdded.map((book)=>
+book.id === 1 ? {} :book);
+
+
+
+// fetch("https://jsonplaceholder.typicode.com/todos")
+// .then((res)=> res.json())
+// .then((data)=> console.log(data));
+
+
+
+async function getTodos(){
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos");
+  const data = await res.json();
+  console.log(data);
+}
+
+const todos = getTodos();
+console.log(todos)
+console.log("Test a");
