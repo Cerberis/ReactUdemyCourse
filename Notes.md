@@ -1,10 +1,14 @@
-Extensions:
+VS Code/ Cursor Extensions:
 
 ESlint - code linter. Automatically finds issues.
 Prettier -  Automatically formats code.
 Material icons - shows file icons
 One Monokai - IDE theme
 Quokka - Runtime values are updated and displayed in your IDE
+Color Highlight - shows true color based on color code
+
+Browser extensions:
+React Developer Tools - for debugging code on browser
 
 Methods:
 sort - orders array by field (mutates original array)
