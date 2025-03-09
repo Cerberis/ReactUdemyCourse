@@ -67,52 +67,49 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
   return (
     <main className="menu">
       <div>
         <h2>Our menu</h2>
-        <Pizza
-          name="Pizza 1"
-          ingredients="Ingr 1, 2, 3"
-          photoName="pizzas/spinaci.jpg"
-          price={10}
-        />
-
-        <Pizza
-          name="Pizza 2"
-          ingredients="Ingr 1, 2, 3"
-          photoName="pizzas/funghi.jpg"
-          price={20}
-        />
+        {pizzas.length > 0 ? (
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name}></Pizza>
+            ))}
+          </ul>
+        ) : (
+          <p>We are out of pizzas</p>
+        )}
       </div>
     </main>
   );
 }
 
-function Pizza(props) {
+function Pizza({ pizzaObj }) {
   return (
-    <div>
-      <img src={props.photoName} alt={props.name} />
-      <h3>{props.name}</h3>
-      <p>{props.ingredients}</p>
-      <span>{props.price + 3}</span>
-    </div>
+    <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
+      <h3>{pizzaObj.name}</h3>
+      <p>{pizzaObj.ingredients}</p>
+      <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price}</span>
+    </li>
   );
 }
 
 function Footer() {
   const hour = new Date().getHours();
-  const openHour = 12;
+  const openHour = 10;
   const closeHour = 22;
   const isOpen = hour >= openHour && hour < closeHour;
-  if (isOpen) {
-    alert("We are open");
-  } else {
-    alert("We are closed");
-  }
+
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()}. We're currently opened{" "}
+      {isOpen ? (
+        <Order closeHour={closeHour} openHour={openHour}></Order>
+      ) : (
+        <p>Come when we are open!</p>
+      )}
     </footer>
   );
 }
@@ -124,3 +121,15 @@ root.render(
     <App></App>
   </React.StrictMode>
 );
+
+function Order({ closeHour, openHour }) {
+  return (
+    <div className="order">
+      <p>
+        We are open from {openHour}:00 to {closeHour}:00. Come visit us or order
+        online.
+      </p>
+      <button className="btn">Order</button>
+    </div>
+  );
+}
