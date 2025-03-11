@@ -22,3 +22,4 @@ fetch - calls endpoint
 
 CLI Commands:
 new app creation - npx create-react-app my-app
+npm start - launching project
