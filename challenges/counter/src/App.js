@@ -1,70 +1,75 @@
 import { useState } from "react";
 
 function App() {
-  const [step, setStep] = useState(1);
-  const [count, setCount] = useState(1);
-
   return (
     <div className="App">
-      <Steps></Steps>
-      <DaysFromNow></DaysFromNow>
-      <Information></Information>
+      <Counter></Counter>
     </div>
   );
 
-  function AddStep() {
-    setStep((s) => s + 1);
-  }
+  function Counter() {
+    const [step, setStep] = useState(1);
+    const [count, setCount] = useState(1);
 
-  function MinusStep() {
-    if (step > 1) {
-      setStep((s) => s - 1);
+    function AddCount() {
+      setCount((c) => c + step);
     }
-  }
 
-  function Steps() {
+    function MinusCount() {
+      if (count > step) {
+        setCount((c) => c - step);
+      }
+    }
+
+    function handleReset() {
+      setCount(1);
+      setStep(1);
+    }
+
     return (
       <div>
-        <button onClick={MinusStep}>-</button>
-        <span>Step: {step}</span>
-        <button onClick={AddStep}>+</button>
+        <div>
+          <input
+            type="range"
+            value={step}
+            min={0}
+            max={10}
+            onChange={(e) => setStep(Number(e.target.value))}
+          ></input>
+          <span>Step: {step}</span>
+        </div>
+        <div>
+          <button onClick={MinusCount}>-</button>
+          <input
+            type="text"
+            value={count}
+            onChange={(e) => setCount(Number(e.target.value))}
+          ></input>
+          <button onClick={AddCount}>+</button>
+        </div>
+        <Information count={count}></Information>
+        <br />
+
+        {(count !== 1 || step !== 1) && (
+          <button onClick={handleReset}>Reset</button>
+        )}
       </div>
     );
   }
 
-  function AddCount() {
-    setCount((c) => c + step);
-  }
-
-  function MinusCount() {
-    if (count > step) {
-      setCount((c) => c - step);
-    }
-  }
-
-  function DaysFromNow() {
-    return (
-      <div>
-        <button onClick={MinusCount}>-</button>
-        <span>Count: {count}</span>
-        <button onClick={AddCount}>+</button>
-      </div>
-    );
-  }
-
-  function Information() {
+  function Information({ count }) {
     if (count < 1) {
       return <p> Today is {Date.now()}</p>;
     }
 
     return (
       <span>
-        {count} days from today is {FormattedDate()}
+        {count} days from today is {FormattedDate(count)}
       </span>
     );
   }
 
-  function FormattedDate() {
+  function FormattedDate(count) {
     const options = {
       weekday: "long",
       year: "numeric",
@@ -74,7 +79,7 @@ function App() {
 
     const date = new Date();
     date.setDate(date.getDate() + count);
-    return <div>{date.toLocaleDateString("en-US", options)}</div>;
+    return <span>{date.toLocaleDateString("en-US", options)}</span>;
   }
 }
 
