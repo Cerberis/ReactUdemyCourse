@@ -19,7 +19,20 @@ map - maps data to different object
 slice - creates copy of array to prevent mutations
 fetch - calls endpoint
 
+Updating filtered entry in array:
+ setNewValues((valueArray) =>
+      valueArray.map((arrayEntry) =>
+        arrayEntry.id === selectedEntry.id
+          ? { ...arrayEntry, balance: selectedEntry + value }
+          : arrayEntry
+      )
+    );
+
 
 CLI Commands:
 new app creation - npx create-react-app my-app
 npm start - launching project
+
+Shortcuts:
+CTRL + / - code comment toggle
+CTRL + ALT + O - fixes imports 
