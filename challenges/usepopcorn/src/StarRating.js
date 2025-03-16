@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Star } from "./Star";
+import PropTypes from "prop-types";
 
 const containerStyle = {
   display: "flex",
@@ -11,30 +12,53 @@ const starContainerStyle = {
   display: "flex",
 };
 
-const textStyle = {
-  lineHeight: "1",
-  margin: "0",
+StarRating.propTypes = {
+  maxRating: PropTypes.number.isRequired,
+  color: PropTypes.string,
+  size: PropTypes.number,
+  className: PropTypes.string,
 };
 
-export function StarRating({ maxRating = 5 }) {
+export function StarRating({
+  maxRating = 5,
+  color = "#fcc419",
+  size = 48,
+  className = "",
+}) {
   const [rating, setRating] = useState(0);
+  const [tempRating, setTempRating] = useState(0);
+
+  const textStyle = {
+    lineHeight: "1",
+    margin: "0",
+    color,
+    fontSize: `${size / 1.5}px`,
+  };
 
   function handleRating(rating) {
     setRating(rating);
   }
 
+  function handleIsFull(value) {
+    return tempRating ? tempRating >= value + 1 : rating >= value + 1;
+  }
+
   return (
-    <div style={containerStyle}>
+    <div style={containerStyle} className={className}>
       <div style={starContainerStyle}>
         {Array.from({ length: maxRating }, (_, i) => (
           <Star
             key={i}
-            onClick={() => handleRating(i + 1)}
-            isFull={rating >= i + 1}
+            isFull={handleIsFull(i)}
+            onRate={() => handleRating(i + 1)}
+            onHoverIn={() => setTempRating(i + 1)}
+            onHoverOut={() => setTempRating(0)}
+            color={color}
+            size={size}
           ></Star>
         ))}
       </div>
-      <p style={textStyle}>{rating || ""}</p>
+      <p style={textStyle}>{tempRating || rating || ""}</p>
     </div>
   );
 }
