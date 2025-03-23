@@ -1,11 +1,22 @@
-import { useEffect, useState } from 'react';
-import { KEY } from './KEY';
-import { StarRating } from './StarRating';
-import { Loader } from './Loader';
+import { useEffect, useState } from "react";
+import { KEY } from "./KEY";
+import { StarRating } from "./StarRating";
+import { Loader } from "./Loader";
 
-export function MovieDetails({ selectedId, onCloseMovie, onAddWatched }) {
+export function MovieDetails({
+  selectedId,
+  onCloseMovie,
+  onAddWatched,
+  watched,
+}) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [userRating, setUserRating] = useState(0);
+
+  const isWatched = watched.map((movie) => movie.imdbId).includes(selectedId);
+  const watchedUserRating = watched.find(
+    (movie) => movie.imdbId === selectedId
+  )?.userRating;
 
   const {
     Title: title,
@@ -36,6 +47,32 @@ export function MovieDetails({ selectedId, onCloseMovie, onAddWatched }) {
     [selectedId]
   );
 
+  useEffect(
+    function () {
+      function escapeToClose(e) {
+        if (e.code === "Escape") {
+          onCloseMovie();
+        }
+      }
+
+      document.addEventListener("keydown", escapeToClose);
+
+      return function () {
+        document.removeEventListener("keydown", escapeToClose);
+      };
+    },
+    [onCloseMovie]
+  );
+
+  useEffect(
+    function () {
+      if (!title) return;
+      document.title = `Movie | ${title}`;
+      return () => (document.title = "usePopcorn");
+    },
+    [title]
+  );
+
   function handleAdd() {
     const newWatchedMovie = {
       imdbId: selectedId,
@@ -43,24 +80,25 @@ export function MovieDetails({ selectedId, onCloseMovie, onAddWatched }) {
       year,
       poster,
       imdbRating: Number(imdbRating),
-      runtime: Number(runtime.split(' ').at(0)),
+      userRating: userRating,
+      runtime: Number(runtime.split(" ").at(0)),
     };
-    console.log(newWatchedMovie);
-    onAddWatched(newWatchedMovie);
+    onAddWatched({ movie: newWatchedMovie });
+    onCloseMovie();
   }
 
   return (
-    <div className="details">
+    <div className='details'>
       {isLoading ? (
         <Loader></Loader>
       ) : (
         <>
           <header>
-            <button className="btn-back" onClick={onCloseMovie}>
+            <button className='btn-back' onClick={onCloseMovie}>
               &larr;
             </button>
             <img src={poster} alt={`Poster of ${movie}`}></img>
-            <div className="details-overview">
+            <div className='details-overview'>
               <h2>{title}</h2>
               <p>
                 {released} &bull; {runtime}
@@ -73,11 +111,26 @@ export function MovieDetails({ selectedId, onCloseMovie, onAddWatched }) {
             </div>
           </header>
           <section>
-            <div className="rating">
-              <StarRating maxRating={10} size={24}></StarRating>
-              <button className="btn-add" onClick={handleAdd}>
-                + Add to list
-              </button>
+            <div className='rating'>
+              {!isWatched ? (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    size={24}
+                    onSetRating={setUserRating}
+                  ></StarRating>
+
+                  {userRating > 0 && (
+                    <button className='btn-add' onClick={handleAdd}>
+                      + Add to list
+                    </button>
+                  )}
+                </>
+              ) : (
+                <p>
+                  You rated the movie {watchedUserRating} <span>⭐</span>
+                </p>
+              )}
             </div>
             <p>
               <em>{plot}</em>

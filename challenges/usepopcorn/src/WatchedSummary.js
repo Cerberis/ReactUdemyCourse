@@ -2,11 +2,11 @@ export function WatchedSummary({ watched }) {
   const average = (arr) =>
     arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-  const avgImdbRating = average(watched.map((movie) => movie?.imdbRating ?? 0));
-  const avgUserRating = average(watched.map((movie) => movie?.userRating ?? 0));
-  const avgRuntime = average(watched.map((movie) => movie?.runtime ?? 0));
+  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
+  const avgUserRating = average(watched.map((movie) => movie.userRating));
+  const avgRuntime = average(watched.map((movie) => movie.runtime));
   return (
-    <div className="summary">
+    <div className='summary'>
       <h2>Movies you watched</h2>
       <div>
         <p>
@@ -15,15 +15,15 @@ export function WatchedSummary({ watched }) {
         </p>
         <p>
           <span>⭐️</span>
-          <span>{avgImdbRating}</span>
+          <span>{avgImdbRating.toFixed(2)}</span>
         </p>
         <p>
           <span>🌟</span>
-          <span>{avgUserRating}</span>
+          <span>{avgUserRating.toFixed(2)}</span>
         </p>
         <p>
           <span>⏳</span>
-          <span>{avgRuntime} min</span>
+          <span>{avgRuntime.toFixed(0)} min</span>
         </p>
       </div>
     </div>

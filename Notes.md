@@ -31,7 +31,7 @@ Updating filtered entry in array:
 
 CLI Commands:
 new app creation - npx create-react-app my-app
-npm start - launching project
+launching project - npm start 
 
 Shortcuts:
 CTRL + / - code comment toggle

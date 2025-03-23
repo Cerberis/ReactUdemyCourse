@@ -1,10 +1,14 @@
-import { WatchedMovie } from './WatchedMovie';
+import { WatchedMovie } from "./WatchedMovie";
 
-export function WatchedMovieList({ watched }) {
+export function WatchedMovieList({ watched, onDeleteWatched }) {
   return (
-    <ul className="list">
+    <ul className='list'>
       {watched.map((movie) => (
-        <WatchedMovie movie={movie} key={`wm_${movie?.imdbId}`}></WatchedMovie>
+        <WatchedMovie
+          movie={movie}
+          key={`wm_${movie?.imdbId}`}
+          onDeleteWatched={onDeleteWatched}
+        ></WatchedMovie>
       ))}
     </ul>
   );
