@@ -1,4 +1,5 @@
 export function WatchedMovie({ movie, onDeleteWatched }) {
+
   return (
     <li>
       <img src={movie.poster} alt={`${movie.title} poster`} />

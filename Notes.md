@@ -28,6 +28,16 @@ Updating filtered entry in array:
       )
     );
 
+UseEffect example:
+  useEffect(function () {
+    localStorage.setItem('watched', JSON.stringify(watched));
+  }, [watched]);
+
+Local storage:
+Set - localStorage.setItem('watched', JSON.stringify(watched));
+Get - localStorage.getItem('watched');
+return JSON.parse(storedValue);
+
 
 CLI Commands:
 new app creation - npx create-react-app my-app
